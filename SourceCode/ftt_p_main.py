@@ -73,6 +73,8 @@ from SourceCode.ftt_p_surv import survival_function
 from SourceCode.ftt_p_shares import shares
 from SourceCode.ftt_p_costc import cost_curves
 
+print_debugging = False
+
 # %% main function
 # -----------------------------------------------------------------------------
 # ----------------------------- Main ------------------------------------------
@@ -282,7 +284,7 @@ def solve(data, time_lag, iter_lag, titles, histend, year, domain):
         if not time_lag['MMCD'][:, :, 0].any():
             time_lag = get_lcoe(data, titles)
         # Call RLDC function for capacity and load factor by LB, and storage costs
-        if year >= 2013:
+        if (year >= 2013 and print_debugging):
             print(f'MEWS: {data["MEWS"][40, 15, 0]:.7f}\n'
             f'MWSLt: {data["MEWS"][40, 15, 0]:.7f}\n' \
             f'MEWG: {data["MEWG"][40, 15, 0]:.0f}\n' \
@@ -783,16 +785,16 @@ def solve(data, time_lag, iter_lag, titles, histend, year, domain):
             # =================================================================
 
             # Update time loop variables:
-            
-            print(year)
-            print(f'MEWS: {data["MEWS"][40, 16, 0]:.7f}\n'
-             f'MWSLt: {data_dt["MEWS"][40, 16, 0]:.7f}\n' \
-             f'MEWG: {data["MEWG"][40, 16, 0]:.0f}\n' \
-             f'MEWK: {data["MEWK"][40, 16, 0]:.4f}\n' \
-             f'MEWL: {data["MEWL"][40, 16, 0]:.7f}\n' \
-             f'METC: {data["METC"][40, 16, 0]:.7f}\n'\
-             f'MWMC: {data_dt["MWMC"][40, 2, 0]:.7f}\n' \
-             f'MMCD: {data_dt["MMCD"][40, 16, 0]:.5f}\n')
+            if print_debugging:
+                print(year)
+                print(f'MEWS: {data["MEWS"][40, 16, 0]:.7f}\n'
+                 f'MWSLt: {data_dt["MEWS"][40, 16, 0]:.7f}\n' \
+                 f'MEWG: {data["MEWG"][40, 16, 0]:.0f}\n' \
+                 f'MEWK: {data["MEWK"][40, 16, 0]:.4f}\n' \
+                 f'MEWL: {data["MEWL"][40, 16, 0]:.7f}\n' \
+                 f'METC: {data["METC"][40, 16, 0]:.7f}\n'\
+                 f'MWMC: {data_dt["MWMC"][40, 2, 0]:.7f}\n' \
+                 f'MMCD: {data_dt["MMCD"][40, 16, 0]:.5f}\n')
             for var in data_dt.keys():
 
                 if domain[var] == 'FTT-P':
